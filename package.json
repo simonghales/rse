@@ -1,0 +1,38 @@
+{
+  "name": "react-three-scene-editor",
+  "version": "1.0.0",
+  "main": "dist/react-three-scene-editor.cjs.js",
+  "module": "dist/react-three-scene-editor.esm.js",
+  "author": "Simon Hales",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@preconstruct/cli": "^2.1.5",
+    "@react-three/drei": "^8.8.4",
+    "@react-three/fiber": "^7.0.26",
+    "@types/react": "^17.0.39",
+    "@types/styled-components": "^5.1.22",
+    "@types/three": "^0.137.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "three": "^0.137.5",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "build": "preconstruct build"
+  },
+  "dependencies": {
+    "styled-components": "^5.3.3",
+    "styled-reset": "^4.3.4",
+    "valtio": "^1.2.12"
+  },
+  "peerDependencies": {
+    "@react-three/drei": ">=8",
+    "@react-three/fiber": ">=7",
+    "react": "*",
+    "react-dom": "*",
+    "three": "*"
+  }
+}
