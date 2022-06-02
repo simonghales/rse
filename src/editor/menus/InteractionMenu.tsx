@@ -1,7 +1,9 @@
 import React from "react"
 import styled, {css} from "styled-components";
 import {THEME} from "../../ui/theme";
-import {AiOutlineRotateRight, FiMove, IoMdResize} from "react-icons/all";
+import {FiMove} from "react-icons/fi";
+import {IoMdResize} from "react-icons/io";
+import {AiOutlineRotateRight} from "react-icons/ai";
 import {cssButtonReset} from "../../ui/buttons";
 import {setTransformMode, TransformMode, useTransformMode} from "../state/editor";
 

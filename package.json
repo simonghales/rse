@@ -1,8 +1,8 @@
 {
   "name": "@simonghales/react-three-scene-editor",
   "version": "0.0.1",
-  "main": "dist/react-three-scene-editor.cjs.js",
-  "module": "dist/react-three-scene-editor.esm.js",
+  "main": "dist/simonghales-react-three-scene-editor.cjs.js",
+  "module": "dist/simonghales-react-three-scene-editor.esm.js",
   "author": "Simon Hales",
   "license": "MIT",
   "devDependencies": {
@@ -22,7 +22,8 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "build": "preconstruct build"
+    "build": "preconstruct build",
+    "yalc:build": "yarn build && yalc publish --push"
   },
   "dependencies": {
     "hotkeys-js": "^3.8.7",

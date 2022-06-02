@@ -4,7 +4,7 @@ import {SceneList} from "./SceneList";
 import {AssetsSection} from "./AssetsSection";
 import {cssDarkTheme, THEME} from "../../ui/theme";
 import {redoData, undoData, useUndoRedoState} from "../state/data";
-import {FaRedoAlt, FaUndoAlt} from "react-icons/all";
+import {FaRedoAlt, FaUndoAlt} from "react-icons/fa";
 import {StyledRoundButton} from "../../ui/buttons";
 import {ContextMenu} from "./ContextMenu";
 
