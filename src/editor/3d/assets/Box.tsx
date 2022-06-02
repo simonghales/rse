@@ -7,10 +7,15 @@ export const BoxComponent: React.FC = ({
     _depth = 1,
                                        }: any) => {
     return (
-        <Box args={[_width, 1, _depth]} position={[0, 0.5, 0]}>
+        <Box args={[_width, _depth, 1]} position={[0, 0, 0.5]}>
             <meshBasicMaterial color={"red"}/>
         </Box>
     )
+    // return (
+    //     <Box args={[_width, 1, _depth]} position={[0, 0.5, 0]}>
+    //         <meshBasicMaterial color={"red"}/>
+    //     </Box>
+    // )
 }
 
 registerAsset({

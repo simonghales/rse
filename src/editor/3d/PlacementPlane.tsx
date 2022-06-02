@@ -1,13 +1,18 @@
 import React, {MutableRefObject, useCallback, useEffect, useRef} from "react"
 import {Plane} from "@react-three/drei";
 import {degToRad} from "three/src/math/MathUtils";
-import {InstancePreview, InstancePreviewHandler} from "./InstancePreview";
-import {addNewInstance, addNewInstanceOfSelectedAsset} from "../state/data";
-import {clearSelectedInstance, hasRecentlyDragged, setClearPendingDown, useIsPlaceInstanceMode} from "../state/editor";
+import {InstancePreviewHandler} from "./InstancePreview";
+import {addNewInstanceOfSelectedAsset} from "../state/data";
+import {clearSelectedInstance, setClearPendingDown, useIsPlaceInstanceMode} from "../state/editor";
 import {isCommandPressed} from "../state/hotkeys";
 import {PlacementType, useSelectedAssetPlacementType} from "../state/assets";
+import {useSceneEditorControlsContext} from "../SceneEditorControlsContext";
 
 export const PlacementPlane: React.FC = () => {
+
+    const {
+        zAxisVertical,
+    } = useSceneEditorControlsContext()
 
     const localStateRef = useRef({
         onPointerDown: [] as Array<MutableRefObject<(x: number, y: number, z:number) => void>>,
@@ -63,11 +68,11 @@ export const PlacementPlane: React.FC = () => {
         if (!enabled) return
 
         const x = event?.point?.x ?? 0
-        const y = event?.point?.y ?? 0
-        const z = event?.point?.z ?? 0
+        const y = zAxisVertical ? (event?.point?.y ?? 0) : 0
+        const z = zAxisVertical ? 0 : (event?.point?.z ?? 0)
 
         localStateRef.current.onPointerMove.forEach(callbackRef => {
-            callbackRef.current(x, 0, z)
+            callbackRef.current(x, y, z)
         })
 
         if (localStateRef.current.pendingDown.pending) {
@@ -88,11 +93,11 @@ export const PlacementPlane: React.FC = () => {
     const onPointerDown = (event: any) => {
 
         const x = event?.point?.x ?? 0
-        const y = event?.point?.y ?? 0
-        const z = event?.point?.z ?? 0
+        const y = zAxisVertical ? (event?.point?.y ?? 0) : 0
+        const z = zAxisVertical ? 0 : (event?.point?.z ?? 0)
 
         localStateRef.current.onPointerDown.forEach(callbackRef => {
-            callbackRef.current(x, 0, z)
+            callbackRef.current(x, y, z)
         })
 
         if (!enabled) {
@@ -113,11 +118,11 @@ export const PlacementPlane: React.FC = () => {
     const onPointerUp = (event: any) => {
 
         const x = event?.point?.x ?? 0
-        const y = event?.point?.y ?? 0
-        const z = event?.point?.z ?? 0
+        const y = zAxisVertical ? (event?.point?.y ?? 0) : 0
+        const z = zAxisVertical ? 0 : (event?.point?.z ?? 0)
 
         localStateRef.current.onPointerUp.forEach(callbackRef => {
-            callbackRef.current(x, 0, z)
+            callbackRef.current(x, y, z)
         })
 
         if (!enabled) {
@@ -134,7 +139,7 @@ export const PlacementPlane: React.FC = () => {
 
 
         if (clickToPlace) {
-            addNewInstanceOfSelectedAsset(x, 0, z)
+            addNewInstanceOfSelectedAsset(x, y, z)
         }
 
     }
@@ -142,7 +147,7 @@ export const PlacementPlane: React.FC = () => {
     return (
         <>
             <Plane onPointerMove={onPointerMove} onPointerDown={onPointerDown} onPointerUp={onPointerUp}
-                   rotation={[degToRad(-90), 0, 0]} args={[1024, 1024, 2, 2]} visible={false}/>
+                   rotation={[zAxisVertical ? 0 : degToRad(-90), 0, 0]} args={[1024, 1024, 2, 2]} visible={false}/>
             {
                 enabled && (
                     <InstancePreviewHandler

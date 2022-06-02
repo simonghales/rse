@@ -1,8 +1,10 @@
-import React, {useRef} from "react"
+import React, {useLayoutEffect, useRef} from "react"
 import {OrbitControls as OrbitControlsImpl} from "three-stdlib"
 import {OrbitControls, PerspectiveCamera} from "@react-three/drei";
 import {clearPendingSelect, miscState} from "../state/editor";
 import {useIsCommandPressed} from "../state/hotkeys";
+import {useSceneEditorControlsContext} from "../SceneEditorControlsContext";
+import {Object3D} from "three";
 
 const Controls: React.FC = () => {
 
@@ -40,9 +42,27 @@ const Controls: React.FC = () => {
 }
 
 export const Camera: React.FC = () => {
+
+    const cameraRef = useRef<Object3D>()
+
+    const {
+        zAxisVertical,
+    } = useSceneEditorControlsContext()
+
+    useLayoutEffect(() => {
+        if (!cameraRef.current) return
+        if (zAxisVertical) {
+            cameraRef.current?.position.set(0, 0, 5)
+            cameraRef.current?.up.set(0, 0, 1)
+        } else {
+            cameraRef.current?.position.set(0, 5, -5)
+            cameraRef.current?.up.set(0, 1, 0)
+        }
+    }, [])
+
     return (
         <>
-            <PerspectiveCamera makeDefault position={[0, 5, -5]} />
+            <PerspectiveCamera ref={cameraRef} makeDefault />
             <Controls/>
         </>
     )

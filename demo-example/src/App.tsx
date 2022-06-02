@@ -25,7 +25,7 @@ export function App() {
                         <ambientLight />
                         <pointLight position={[10, 10, 10]} />
                         {/*<Box/>*/}
-                        <SceneEditorControls/>
+                        <SceneEditorControls zAxisVertical/>
                     </Canvas>
                 </StyledContainer>
             </SceneEditor>

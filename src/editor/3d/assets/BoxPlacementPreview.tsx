@@ -6,12 +6,21 @@ import {addNewInstanceOfSelectedAsset} from "../../state/data";
 import {Object3D} from "three";
 import {isCommandPressed} from "../../state/hotkeys";
 import {clearSelectedAsset, setSelectedInstance} from "../../state/editor";
+import {useSceneEditorControlsContext} from "../../SceneEditorControlsContext";
 
 export const BoxPlacementPreview: React.FC<InstancePreviewProps> = ({
     subscribeOnPointerDown,
     subscribeOnPointerUp,
     subscribeOnPointerMove,
                                                                     }) => {
+
+    const {
+        zAxisVertical,
+    } = useSceneEditorControlsContext()
+
+    const startIndex = 0
+    const endIndex = zAxisVertical ? 1 : 2
+
 
     const [pointerDown, setPointerDown] = useState(false)
 
@@ -26,32 +35,40 @@ export const BoxPlacementPreview: React.FC<InstancePreviewProps> = ({
     const endRef = useRef<any>()
 
     const updateBox = useCallback((from: [number, number, number], to: [number, number, number]) => {
-        const width = Math.abs(from[0] - to[0])
-        const height = Math.abs(from[2] - to[2])
+        const width = Math.abs(from[startIndex] - to[startIndex])
+        const height = Math.abs(from[endIndex] - to[endIndex])
         startRef.current.position.set(from[0], from[1], from[2])
         endRef.current.position.set(to[0], to[1], to[2])
-        if (to[0] > from[0]) {
-            if (to[2] > from[2]) {
-                const right = from[0]
-                const bottom = from[2]
-                boxRef.current.position.set(right + (width / 2), boxRef.current.position.y, bottom + (height / 2))
+        if (to[startIndex] > from[startIndex]) {
+            if (to[endIndex] > from[endIndex]) {
+                const right = from[startIndex]
+                const bottom = from[endIndex]
+                const start = right + (width / 2)
+                const end = bottom + (height / 2)
+                boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             } else {
-                const right = from[0]
-                const bottom = from[2]
-                boxRef.current.position.set(right + (width / 2), boxRef.current.position.y, bottom - (height / 2))
+                const right = from[startIndex]
+                const bottom = from[endIndex]
+                const start = right + (width / 2)
+                const end = bottom - (height / 2)
+                boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             }
         } else {
-            if (to[2] > from[2]) {
-                const left = from[0]
-                const bottom = from[2]
-                boxRef.current.position.set(left - (width / 2), boxRef.current.position.y, bottom + (height / 2))
+            if (to[endIndex] > from[endIndex]) {
+                const left = from[startIndex]
+                const bottom = from[endIndex]
+                const start = left - (width / 2)
+                const end = bottom + (height / 2)
+                boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             } else {
-                const left = from[0]
-                const bottom = from[2]
-                boxRef.current.position.set(left - (width / 2), boxRef.current.position.y, bottom - (height / 2))
+                const left = from[startIndex]
+                const bottom = from[endIndex]
+                const start = left - (width / 2)
+                const end = bottom - (height / 2)
+                boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             }
         }
-        boxRef.current.scale.set(width, 0.01, height)
+        boxRef.current.scale.set(width, zAxisVertical ? height : 0.01, !zAxisVertical ? height : 0.01)
     }, [])
 
     const onPointerDown = useCallback((x: number, y: number, z: number) => {
@@ -78,7 +95,7 @@ export const BoxPlacementPreview: React.FC<InstancePreviewProps> = ({
         }
         const id = addNewInstanceOfSelectedAsset(boxRef.current.position.x, boxRef.current.position.y, boxRef.current.position.z, {
             _width: boxRef.current.scale.x,
-            _depth: boxRef.current.scale.z,
+            _depth: zAxisVertical ? boxRef.current.scale.y : boxRef.current.scale.z,
         })
         if (id) {
             setSelectedInstance(id)
