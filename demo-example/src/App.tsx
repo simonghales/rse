@@ -24,7 +24,7 @@ export function App() {
                     <Canvas>
                         <ambientLight />
                         <pointLight position={[10, 10, 10]} />
-                        <Box/>
+                        {/*<Box/>*/}
                         <SceneEditorControls/>
                     </Canvas>
                 </StyledContainer>

@@ -8,4 +8,15 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   
+  body {
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+  }
+
+  .selectBox {
+    border: 1px solid #55aaff;
+    background-color: rgba(75, 160, 255, 0.3);
+    position: fixed;
+  }
+  
 `

@@ -1,7 +1,10 @@
 import React from "react"
-import {SceneEditorUI} from "./SceneEditorUI";
+import {SceneEditorUI} from "./menus/SceneEditorUI";
 import styled from "styled-components";
 import {GlobalStyle} from "../ui/global";
+import {HotkeysHandler} from "./HotkeysHandler";
+import "./3d/assets/defaultAssets"
+import {InteractionMenu} from "./menus/InteractionMenu";
 
 const StyledContainer = styled.div`
   position: absolute;
@@ -21,13 +24,18 @@ const StyledChildrenWrapper = styled.div`
 export const SceneEditor: React.FC = ({children}) => {
     return (
         <>
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+            </style>
             <GlobalStyle/>
             <StyledContainer>
                 <SceneEditorUI/>
                 <StyledChildrenWrapper>
                     {children}
+                    <InteractionMenu/>
                 </StyledChildrenWrapper>
             </StyledContainer>
+            <HotkeysHandler/>
         </>
     )
 }
