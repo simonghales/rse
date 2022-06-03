@@ -137,6 +137,16 @@ export const deleteInstance = (id: string) => {
     delete instancesDataProxy.value.instances[id]
 }
 
+export const duplicateInstance = (id: string) => {
+    const instance = instancesDataProxy.value.instances[id]
+    if (!instance) return
+    const newId = uniqueId()
+    instancesDataProxy.value.instances[newId] = {
+        ...instance,
+        id: newId,
+    }
+}
+
 export const deleteInstances = (ids: string[]) => {
     const update = {
         ...instancesDataProxy.value.instances,

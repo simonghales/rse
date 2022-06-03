@@ -2,10 +2,18 @@ import React, {MutableRefObject, useEffect, useMemo, useRef} from "react"
 import {Object3D, Vector3} from "three";
 import {TransformControls} from "@react-three/drei";
 import {miscState, setIsDragging, TransformMode, updateLastDragged, useTransformMode} from "../state/editor";
-import {updateInstancePosition, updateInstanceRotation, updateInstanceScale} from "../state/data";
+import {
+    deleteInstance,
+    duplicateInstance,
+    updateInstancePosition,
+    updateInstanceRotation,
+    updateInstanceScale
+} from "../state/data";
 import {useEffectRef} from "../../utils/hooks";
 import {radToDeg} from "three/src/math/MathUtils";
 import {useIsShiftPressed} from "../state/hotkeys";
+import useKeypress from 'react-use-keypress';
+import {useHotkeys} from "react-hotkeys-hook";
 
 const v3 = new Vector3()
 
@@ -85,8 +93,23 @@ export const SelectedInstanceHandler: React.FC<{
         }
     }, [object])
 
+    useHotkeys('ctrl+d, cmd+d', (event) => {
+        event.preventDefault()
+        duplicateInstance(id)
+    })
+
+    useHotkeys('ctrl+del, cmd+del, ctrl+backspace, cmd+backspace', (event) => {
+        event.preventDefault()
+        deleteInstance(id)
+    })
+
+    useEffect(() => {
+        if (!transformRef.current) return
+        transformRef.current.translationSnap = shiftHeld ? 1 : null
+    }, [shiftHeld])
+
     return (
-        <TransformControls ref={transformRef} object={object} translationSnap={shiftHeld ? 1 : null} mode={mode}>
+        <TransformControls ref={transformRef} object={object} mode={mode}>
             <></>
         </TransformControls>
     )
