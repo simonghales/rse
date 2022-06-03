@@ -3,8 +3,8 @@ import styled from "styled-components";
 import {SceneList} from "./SceneList";
 import {AssetsSection} from "./AssetsSection";
 import {cssDarkTheme, THEME} from "../../ui/theme";
-import {redoData, undoData, useUndoRedoState} from "../state/data";
-import {FaRedoAlt, FaUndoAlt} from "react-icons/fa";
+import {getSnapshot, redoData, undoData, useUndoRedoState} from "../state/data";
+import {FaRedoAlt, FaUndoAlt, FaSave} from "react-icons/fa";
 import {StyledRoundButton} from "../../ui/buttons";
 import {ContextMenu} from "./ContextMenu";
 
@@ -21,7 +21,7 @@ const StyledContainer = styled.div`
 
 const StyledTopContainer = styled.div`
   display: grid;
-  grid-template-columns: auto auto;
+  grid-auto-flow: column;
   justify-content: flex-end;
   grid-column-gap: ${THEME.spacing.$0b}px;
   padding: 0 ${THEME.spacing.$2}px;
@@ -34,8 +34,19 @@ const TopOptions: React.FC = () => {
         canRedo,
     } = useUndoRedoState()
 
+    const copyData = () => {
+        navigator.clipboard.writeText(JSON.stringify(getSnapshot())).then(function() {
+            console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+
     return (
         <StyledTopContainer>
+            <StyledRoundButton onClick={copyData} disabled={false}>
+                <FaSave/>
+            </StyledRoundButton>
             <StyledRoundButton onClick={undoData} disabled={!canUndo}>
                 <FaUndoAlt/>
             </StyledRoundButton>

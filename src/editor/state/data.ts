@@ -40,6 +40,7 @@ export enum GroupDataKeys {
 }
 
 export type StoredData = {
+    timestamp?: number,
     instances: Record<string, InstanceData>,
     groups?: Record<string, GroupData>,
 }
@@ -52,6 +53,16 @@ const getInitialState = (): StoredData => {
 
 export const instancesDataProxy = proxyWithHistory(getInitialState() as StoredData)
 
+export const setInstancesData = (data: any) => {
+    const newTimestamp = data?.timestamp ?? 0
+    const currentTimestamp = instancesDataProxy.value?.timestamp ?? 0
+    if (newTimestamp <= currentTimestamp) {
+        console.log('ignoring old data...')
+        return
+    }
+    instancesDataProxy.value = data
+}
+
 const savedSaveHistory = instancesDataProxy.saveHistory
 instancesDataProxy.saveHistory = () => {
     savedSaveHistory()
@@ -62,8 +73,15 @@ instancesDataProxy.saveHistory = () => {
 }
 
 export const storeSnapshot = () => {
-    console.log('storeSnapshot')
-    set(storageKey, snapshot(instancesDataProxy.value));
+    const timestamp = Date.now()
+    set(storageKey, {
+        ...snapshot(instancesDataProxy.value),
+        timestamp,
+    });
+}
+
+export const getSnapshot = () => {
+    return snapshot(instancesDataProxy.value)
 }
 
 subscribe(instancesDataProxy.value, storeSnapshot)

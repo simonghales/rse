@@ -1,7 +1,7 @@
 import React, {useLayoutEffect, useRef} from "react"
 import {OrbitControls as OrbitControlsImpl} from "three-stdlib"
-import {OrbitControls, PerspectiveCamera} from "@react-three/drei";
-import {clearPendingSelect, miscState} from "../state/editor";
+import {MapControls, OrbitControls, PerspectiveCamera} from "@react-three/drei";
+import {clearPendingSelect, miscState, useIsPlaceInstanceMode, useSelectedInstance} from "../state/editor";
 import {useIsCommandPressed} from "../state/hotkeys";
 import {useSceneEditorControlsContext} from "../SceneEditorControlsContext";
 import {Object3D} from "three";
@@ -31,13 +31,20 @@ const Controls: React.FC = () => {
 
     const commandPressed = useIsCommandPressed()
 
-    return (
-        <OrbitControls mouseButtons={{
-            LEFT: 2,
-            RIGHT: 2,
-            MIDDLE: 2,
-        }} enablePan={false} enableRotate={commandPressed} onChange={onChange} onEnd={onEnd} onStart={onStart} makeDefault ref={ref} />
-    )
+    const selectedInstance = useSelectedInstance()
+    const hasSelectedInstance = selectedInstance?.id !== ''
+
+    const disabled = useIsPlaceInstanceMode()
+
+    return <MapControls enabled={!hasSelectedInstance && !disabled} enableRotate={false}/>
+
+    // return (
+    //     <OrbitControls mouseButtons={{
+    //         LEFT: 2,
+    //         RIGHT: 2,
+    //         MIDDLE: 2,
+    //     }} enablePan={false} enableRotate={commandPressed} onChange={onChange} onEnd={onEnd} onStart={onStart} makeDefault ref={ref} />
+    // )
 
 }
 

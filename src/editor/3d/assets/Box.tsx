@@ -18,10 +18,7 @@ export const BoxComponent: React.FC = ({
     // )
 }
 
-registerAsset({
-    id: '_box',
-    name: 'Box',
-    component: BoxComponent,
+export const boxLikeAssetConfig = {
     inputs: {
         ...defaultInputs,
         _width: {
@@ -36,4 +33,11 @@ registerAsset({
         },
     },
     placementType: PlacementType.box,
-})
+}
+
+// registerAsset({
+//     ...boxLikeAssetConfig,
+//     id: '_box',
+//     name: 'Box',
+//     component: BoxComponent,
+// })

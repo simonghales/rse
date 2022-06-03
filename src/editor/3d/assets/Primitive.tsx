@@ -10,11 +10,11 @@ export const Primitive: React.FC = () => {
     )
 }
 
-registerAsset({
-    id: '_primitive',
-    name: 'Primitive',
-    component: Primitive,
-    inputs: {
-        ...defaultInputs,
-    }
-})
+// registerAsset({
+//     id: '_primitive',
+//     name: 'Primitive',
+//     component: Primitive,
+//     inputs: {
+//         ...defaultInputs,
+//     }
+// })

@@ -10,8 +10,8 @@ export const EmptyObject: React.FC = () => {
     )
 }
 
-registerAsset({
-    id: '_emptyObject',
-    name: 'Empty Object',
-    component: EmptyObject,
-})
+// registerAsset({
+//     id: '_emptyObject',
+//     name: 'Empty Object',
+//     component: EmptyObject,
+// })
