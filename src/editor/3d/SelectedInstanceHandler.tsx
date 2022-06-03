@@ -5,6 +5,7 @@ import {miscState, setIsDragging, TransformMode, updateLastDragged, useTransform
 import {updateInstancePosition, updateInstanceRotation, updateInstanceScale} from "../state/data";
 import {useEffectRef} from "../../utils/hooks";
 import {radToDeg} from "three/src/math/MathUtils";
+import {useIsShiftPressed} from "../state/hotkeys";
 
 const v3 = new Vector3()
 
@@ -13,7 +14,7 @@ export const SelectedInstanceHandler: React.FC<{
     objRef: MutableRefObject<Object3D>,
 }> = ({id, objRef}) => {
 
-    const shiftHeld = false
+    const shiftHeld = useIsShiftPressed()
 
     const transformRef = useRef<any>()
 

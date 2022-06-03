@@ -4,7 +4,7 @@ import {useEffectRef} from "../../../utils/hooks";
 import {Box, Sphere} from "@react-three/drei";
 import {addNewInstanceOfSelectedAsset} from "../../state/data";
 import {Object3D} from "three";
-import {isCommandPressed} from "../../state/hotkeys";
+import {isCommandPressed, isShiftPressed} from "../../state/hotkeys";
 import {clearSelectedAsset, setSelectedInstance} from "../../state/editor";
 import {useSceneEditorControlsContext} from "../../SceneEditorControlsContext";
 
@@ -35,34 +35,67 @@ export const BoxPlacementPreview: React.FC<InstancePreviewProps> = ({
     const endRef = useRef<any>()
 
     const updateBox = useCallback((from: [number, number, number], to: [number, number, number]) => {
-        const width = Math.abs(from[startIndex] - to[startIndex])
-        const height = Math.abs(from[endIndex] - to[endIndex])
-        startRef.current.position.set(from[0], from[1], from[2])
-        endRef.current.position.set(to[0], to[1], to[2])
-        if (to[startIndex] > from[startIndex]) {
-            if (to[endIndex] > from[endIndex]) {
-                const right = from[startIndex]
-                const bottom = from[endIndex]
+        const shiftPressed = isShiftPressed()
+        let width = Math.abs(from[startIndex] - to[startIndex])
+        let height = Math.abs(from[endIndex] - to[endIndex])
+        let startX = from[0]
+        let startY = from[1]
+        let startZ = from[2]
+        let endX = to[0]
+        let endY = to[1]
+        let endZ = to[2]
+        let fromStart = from[startIndex]
+        let toStart = to[startIndex]
+        let fromEnd = from[endIndex]
+        let toEnd = to[endIndex]
+        if (shiftPressed) {
+            width = Math.round(width)
+            height = Math.round(height)
+            startX = Math.round(startX)
+            startY = Math.round(startY)
+            startZ = Math.round(startZ)
+            endX = Math.round(endX)
+            endY = Math.round(endY)
+            endZ = Math.round(endZ)
+            fromStart = Math.round(fromStart)
+            toStart = Math.round(toStart)
+            fromEnd = Math.round(fromEnd)
+            toEnd = Math.round(toEnd)
+        }
+        startRef.current.position.set(
+            startX,
+            startY,
+            startZ,
+        )
+        endRef.current.position.set(
+            endX,
+            endY,
+            endZ,
+        )
+        if (toStart > fromStart) {
+            if (toEnd > fromEnd) {
+                const right = fromStart
+                const bottom = fromEnd
                 const start = right + (width / 2)
                 const end = bottom + (height / 2)
                 boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             } else {
-                const right = from[startIndex]
-                const bottom = from[endIndex]
+                const right = fromStart
+                const bottom = fromEnd
                 const start = right + (width / 2)
                 const end = bottom - (height / 2)
                 boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             }
         } else {
-            if (to[endIndex] > from[endIndex]) {
-                const left = from[startIndex]
-                const bottom = from[endIndex]
+            if (toEnd > fromEnd) {
+                const left = fromStart
+                const bottom = fromEnd
                 const start = left - (width / 2)
                 const end = bottom + (height / 2)
                 boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)
             } else {
-                const left = from[startIndex]
-                const bottom = from[endIndex]
+                const left = fromStart
+                const bottom = fromEnd
                 const start = left - (width / 2)
                 const end = bottom - (height / 2)
                 boxRef.current.position.set(start, zAxisVertical ? end : boxRef.current.position.y, !zAxisVertical ? end : boxRef.current.position.z)

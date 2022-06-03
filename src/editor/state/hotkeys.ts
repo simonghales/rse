@@ -26,6 +26,10 @@ export const useIsCommandPressed = () => {
     return useSnapshot(hotkeysProxy).commandPressed
 }
 
+export const useIsShiftPressed = () => {
+    return useSnapshot(hotkeysProxy).shiftPressed
+}
+
 export const isCommandPressed = () => {
     return hotkeysProxy.commandPressed
 }
