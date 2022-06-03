@@ -143,6 +143,10 @@ export const useSelectedInstance = () => {
     return useSnapshot(editorStateProxy).selectedInstance
 }
 
+export const getSelectedId = () => {
+    return editorStateProxy.selectedInstance.id
+}
+
 export const clearSelectedInstance = () => {
     editorStateProxy.selectedInstance.id = ''
     editorStateProxy.selectedInstance.objRef = null

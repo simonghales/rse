@@ -1,7 +1,14 @@
 import React, {MutableRefObject, useEffect, useMemo, useRef} from "react"
 import {Object3D, Vector3} from "three";
 import {TransformControls} from "@react-three/drei";
-import {miscState, setIsDragging, TransformMode, updateLastDragged, useTransformMode} from "../state/editor";
+import {
+    getSelectedId,
+    miscState,
+    setIsDragging,
+    TransformMode,
+    updateLastDragged,
+    useTransformMode
+} from "../state/editor";
 import {
     deleteInstance,
     duplicateInstance,
@@ -95,12 +102,12 @@ export const SelectedInstanceHandler: React.FC<{
 
     useHotkeys('ctrl+d, cmd+d', (event) => {
         event.preventDefault()
-        duplicateInstance(id)
+        duplicateInstance(getSelectedId())
     })
 
     useHotkeys('ctrl+del, cmd+del, ctrl+backspace, cmd+backspace', (event) => {
         event.preventDefault()
-        deleteInstance(id)
+        deleteInstance(getSelectedId())
     })
 
     useEffect(() => {
