@@ -1,16 +1,39 @@
 import React, {useEffect, useMemo} from "react"
 import {Instance} from "./Instance";
 import {useSnapshot} from "valtio";
-import {InstanceData, instancesDataProxy} from "../state/data";
+import {GroupData, InstanceData, instancesDataProxy} from "../state/data";
 import {editorStateProxy, useIsFreeViewMode, useSelectedInstance, useSelectedInstances} from "../state/editor";
 import {SelectedInstanceHandler} from "./SelectedInstanceHandler";
 import {SelectedInstanceMenu} from "../menus/SelectedInstanceMenu";
 import {SelectedInstancesRangeHandler} from "./SelectedInstancesRangeHandler";
 import {AssetConfig, useAssets} from "../state/assets";
 
+const isParentGroupLocked = (id: string, groups: Record<string, GroupData>) => {
+    const parentGroup = Object.entries(groups).find(([groupId, groupData]) => {
+        return (groupData.children.includes(id))
+    })
+    if (parentGroup) {
+        return parentGroup[1]._locked ?? false
+    }
+    return false
+}
+
+const isParentGroupHidden = (id: string, groups: Record<string, GroupData>) => {
+    const parentGroup = Object.entries(groups).find(([groupId, groupData]) => {
+        return (groupData.children.includes(id))
+    })
+    if (parentGroup) {
+        return parentGroup[1]._hidden ?? false
+    }
+    return false
+}
+
 const SceneInstances: React.FC = () => {
     const assets = useAssets()
-    const data = useSnapshot(instancesDataProxy).value.instances
+    const {
+        instances: data,
+        groups,
+    } = useSnapshot(instancesDataProxy).value
     const hoveredInstance = useSnapshot(editorStateProxy).hoveredInstance
     const isFreeView = useIsFreeViewMode()
     const {
@@ -31,16 +54,17 @@ const SceneInstances: React.FC = () => {
             const selected = id === selectedInstance
             const rangeSelected = isFreeView && (!selected && (id === selectedInstanceSource || selectedInstancesRange.includes(id)))
             const asset = assets[instance._type]
-            const selectable = isFreeView
             if (!asset) {
                 return null
             }
             const groupProps = (asset && asset.getGroupProps) ? asset.getGroupProps(instance as InstanceData, asset as AssetConfig) : {}
+            const selectable = isFreeView && !isParentGroupLocked(id, groups as any)
+            const hidden = isParentGroupHidden(id, groups as any)
             return (
-                <Instance {...(instance as InstanceData)} groupProps={groupProps} selectable={selectable} component={asset.component} rangeSelected={rangeSelected} selected={selected} hovered={id === hoveredInstance} key={id}/>
+                <Instance {...(instance as InstanceData)} hidden={hidden} groupProps={groupProps} selectable={selectable} component={asset.component} rangeSelected={rangeSelected} selected={selected} hovered={id === hoveredInstance} key={id}/>
             )
         })
-    }, [data, assets, isFreeView, selectedInstance, hoveredInstance, selectedInstancesRange, selectedInstanceSource])
+    }, [data, assets, isFreeView, selectedInstance, hoveredInstance, selectedInstancesRange, selectedInstanceSource, groups])
 
     return (
         <>

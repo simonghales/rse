@@ -8,6 +8,7 @@ export const Instance: React.FC<InstanceData & {
     hovered: boolean,
     rangeSelected: boolean,
     component: any,
+    hidden: boolean,
     groupProps: Record<string, any>,
 }> = ({
           id,
@@ -16,6 +17,7 @@ export const Instance: React.FC<InstanceData & {
             selectable,
           hovered,
           rangeSelected,
+                                 hidden,
          component: Component,
     ...otherProps
       }) => {
@@ -31,7 +33,7 @@ export const Instance: React.FC<InstanceData & {
     const inner = (
         <group {...groupProps} ref={ref}
                 onPointerUp={onPointerUp} onPointerDown={onPointerDown}
-                onPointerOut={onPointerOut} onPointerOver={onPointerOver}>
+                onPointerOut={onPointerOut} onPointerOver={onPointerOver} visible={!hidden}>
             <Component id={id} {...otherProps}/>
         </group>
     )

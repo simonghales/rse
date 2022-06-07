@@ -33,10 +33,14 @@ export type GroupData = {
     children: string[],
     _name?: string,
     _parent?: string,
+    _locked?: boolean,
+    _hidden?: boolean,
 }
 
 export enum GroupDataKeys {
     name = '_name',
+    locked = '_locked',
+    hidden = '_hidden',
 }
 
 export type StoredData = {
@@ -81,7 +85,6 @@ export const storeSnapshot = () => {
         ...snapshot(instancesDataProxy.value),
         timestamp,
     });
-    console.log('storeSnapshot')
 }
 
 export const getSnapshot = () => {

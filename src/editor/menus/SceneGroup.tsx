@@ -18,7 +18,17 @@ import {
     startFreeViewMode, useIsGroupExpanded
 } from "../state/editor";
 import {isCommandPressed, isShiftPressed} from "../state/hotkeys";
-import {FaCaretDown, FaCaretUp, FaCube, FaFolder, FaFolderOpen, FaSave} from "react-icons/fa";
+import {
+    FaCaretDown,
+    FaCaretUp,
+    FaCube,
+    FaEye, FaEyeSlash,
+    FaFolder,
+    FaFolderOpen,
+    FaLock,
+    FaLockOpen,
+    FaSave
+} from "react-icons/fa";
 import {cssButtonReset, StyledRoundButton} from "../../ui/buttons";
 
 type ItemBase = {
@@ -65,6 +75,9 @@ const StyledHeaderOptions = styled.div`
 const StyledExtras = styled.div`
   justify-self: flex-end;
   align-self: center;
+  height: 10px;
+  display: flex;
+  align-items: center;
 `
 
 export const SceneGroup: React.FC<{
@@ -102,6 +115,21 @@ export const SceneGroup: React.FC<{
     } = useNameEdit(selected)
 
     const name = data?.data?._name || 'Group'
+
+    const hidden = data?.data?.[GroupDataKeys.hidden] ?? false
+    const locked = data?.data?.[GroupDataKeys.locked] ?? false
+
+    const onToggleVisibility = () => {
+        updateGroupValue(id, {
+            [GroupDataKeys.hidden]: !hidden,
+        })
+    }
+
+    const onToggleLocked = () => {
+        updateGroupValue(id, {
+            [GroupDataKeys.locked]: !locked,
+        })
+    }
 
     return (
         <div>
@@ -146,11 +174,23 @@ export const SceneGroup: React.FC<{
                         </StyledToggleIcon>
                     </div>
                     <StyledExtras>
-                        <StyledRoundButton>
-                            <FaSave/>
+                        <StyledRoundButton onClick={onToggleVisibility}>
+                            {
+                                hidden ? (
+                                    <FaEyeSlash size={11}/>
+                                ) : (
+                                    <FaEye size={11}/>
+                                )
+                            }
                         </StyledRoundButton>
-                        <StyledRoundButton>
-                            <FaSave/>
+                        <StyledRoundButton onClick={onToggleLocked}>
+                            {
+                                locked ? (
+                                    <FaLock size={11}/>
+                                ) : (
+                                    <FaLockOpen size={11}/>
+                                )
+                            }
                         </StyledRoundButton>
                     </StyledExtras>
                 </StyledHeaderOptions>
