@@ -60,7 +60,10 @@ export const setInstancesData = (data: any) => {
         console.log('ignoring old data...')
         return
     }
-    instancesDataProxy.value = data
+    Object.entries(data).forEach(([key, entry]) => {
+        // @ts-ignore
+        instancesDataProxy.value[key] = entry
+    })
 }
 
 const savedSaveHistory = instancesDataProxy.saveHistory
@@ -78,6 +81,7 @@ export const storeSnapshot = () => {
         ...snapshot(instancesDataProxy.value),
         timestamp,
     });
+    console.log('storeSnapshot')
 }
 
 export const getSnapshot = () => {

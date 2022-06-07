@@ -18,8 +18,8 @@ import {
     startFreeViewMode, useIsGroupExpanded
 } from "../state/editor";
 import {isCommandPressed, isShiftPressed} from "../state/hotkeys";
-import {FaCaretDown, FaCaretUp, FaCube, FaFolder, FaFolderOpen} from "react-icons/fa";
-import {cssButtonReset} from "../../ui/buttons";
+import {FaCaretDown, FaCaretUp, FaCube, FaFolder, FaFolderOpen, FaSave} from "react-icons/fa";
+import {cssButtonReset, StyledRoundButton} from "../../ui/buttons";
 
 type ItemBase = {
     id: string,
@@ -54,6 +54,17 @@ const StyledToggleIcon = styled.button`
   align-items: center;
   padding: 2px;
   margin-left: 1px;
+`
+
+const StyledHeaderOptions = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+`
+
+const StyledExtras = styled.div`
+  justify-self: flex-end;
+  align-self: center;
 `
 
 export const SceneGroup: React.FC<{
@@ -106,33 +117,43 @@ export const SceneGroup: React.FC<{
                         )
                     }
                 </StyledIcon>
-                <div>
-                    {
-                        editingName ? (
-                            <NameInput name={name} onComplete={(newName: string) => {
-                                updateGroupValue(id, {
-                                    [GroupDataKeys.name]: newName,
-                                })
-                                finish()
-                            }}/>
-                        ) : (
-                            <span onClick={onNameClick}>
-                            {name}
-                        </span>
-                        )
-                    }
-                    <StyledToggleIcon onClick={() => {
-                        onToggle()
-                    }}>
+                <StyledHeaderOptions>
+                    <div>
                         {
-                            expanded ? (
-                                <FaCaretDown/>
+                            editingName ? (
+                                <NameInput name={name} onComplete={(newName: string) => {
+                                    updateGroupValue(id, {
+                                        [GroupDataKeys.name]: newName,
+                                    })
+                                    finish()
+                                }}/>
                             ) : (
-                                <FaCaretUp/>
+                                <span onClick={onNameClick}>
+                                {name}
+                            </span>
                             )
                         }
-                    </StyledToggleIcon>
-                </div>
+                        <StyledToggleIcon onClick={() => {
+                            onToggle()
+                        }}>
+                            {
+                                expanded ? (
+                                    <FaCaretDown/>
+                                ) : (
+                                    <FaCaretUp/>
+                                )
+                            }
+                        </StyledToggleIcon>
+                    </div>
+                    <StyledExtras>
+                        <StyledRoundButton>
+                            <FaSave/>
+                        </StyledRoundButton>
+                        <StyledRoundButton>
+                            <FaSave/>
+                        </StyledRoundButton>
+                    </StyledExtras>
+                </StyledHeaderOptions>
             </StyledGroupContainer>
             {
                 expanded && (

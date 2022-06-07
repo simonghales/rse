@@ -32,7 +32,7 @@ export const Instance: React.FC<InstanceData & {
         <group {...groupProps} ref={ref}
                 onPointerUp={onPointerUp} onPointerDown={onPointerDown}
                 onPointerOut={onPointerOut} onPointerOver={onPointerOver}>
-            <Component {...otherProps}/>
+            <Component id={id} {...otherProps}/>
         </group>
     )
 

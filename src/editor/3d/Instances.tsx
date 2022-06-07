@@ -18,10 +18,6 @@ const SceneInstances: React.FC = () => {
         selectedInstancesRange,
     } = useSelectedInstances()
 
-    useEffect(() => {
-        console.log('data', data)
-    }, [data])
-
     const selectedInstance = useMemo(() => {
         if (!isFreeView) return ''
         if (selectedInstancesRange.length === 0 || selectedInstancesRange.length === 1 && (selectedInstancesRange[0] === selectedInstanceSource)) {
