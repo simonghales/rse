@@ -1,58 +1,17 @@
 import {proxyWithHistory} from 'valtio/utils'
-import {get, set} from "local-storage"
+import {set} from "local-storage"
 import {uniqueId} from "../../utils/ids";
 import {useEffect, useState} from "react";
-import {proxy, snapshot, subscribe} from "valtio";
+import {snapshot, subscribe} from "valtio";
 import {editorStateProxy} from "./editor";
 import {assetsProxy} from "./assets";
-
-const storageKey = '_instancesData'
-
-export type InstanceData = {
-    id: string,
-    _type: string,
-    _name?: string,
-    _parent?: string,
-    [key: string]: any,
-}
-
-export enum InstanceDataKeys {
-    name = '_name',
-    position = '_position',
-    scale = '_scale',
-    rotation = '_rotation',
-}
+import {getInitialState, storageKey} from "./storage";
+import {InstanceData, InstanceDataKeys, StoredData} from "./types";
 
 export const DEFAULT_POSITION: [number, number, number] = [0, 0, 0]
 
 export const getInstancePosition = (instance: InstanceData) => {
     return instance?._position ?? DEFAULT_POSITION
-}
-
-export type GroupData = {
-    children: string[],
-    _name?: string,
-    _parent?: string,
-    _locked?: boolean,
-    _hidden?: boolean,
-}
-
-export enum GroupDataKeys {
-    name = '_name',
-    locked = '_locked',
-    hidden = '_hidden',
-}
-
-export type StoredData = {
-    timestamp?: number,
-    instances: Record<string, InstanceData>,
-    groups?: Record<string, GroupData>,
-}
-
-const getInitialState = (): StoredData => {
-    return get(storageKey) ?? {
-        instances: {},
-    }
 }
 
 export const instancesDataProxy = proxyWithHistory(getInitialState() as StoredData)

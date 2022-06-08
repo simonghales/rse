@@ -4,6 +4,7 @@ import { SceneEditorControls } from "./editor/SceneEditorControls";
 import { boxLikeAssetConfig } from "./editor/3d/assets/Box";
 import { registerAsset } from "./editor/state/assets";
 import { setInstancesData } from "./editor/state/data";
+import {getSceneData, useSceneData } from "./live/SceneManager";
 
 export {
     SceneEditor,
@@ -11,4 +12,6 @@ export {
     boxLikeAssetConfig,
     registerAsset,
     setInstancesData,
+    useSceneData,
+    getSceneData,
 }

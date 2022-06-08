@@ -3,9 +3,10 @@ import styled from "styled-components";
 import {THEME} from "../../ui/theme";
 import {StyledMediumHeader} from "../../ui/typography";
 import {useSnapshot} from "valtio";
-import {GroupData, InstanceData, instancesDataProxy} from "../state/data";
+import {instancesDataProxy} from "../state/data";
 import {editorStateProxy, sortInstances, useSelectedInstances} from "../state/editor";
 import {Group, Item} from "./SceneGroup";
+import {GroupData, InstanceData} from "../state/types";
 
 const StyledContainer = styled.div`
   display: grid;

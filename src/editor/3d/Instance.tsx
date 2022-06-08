@@ -1,6 +1,7 @@
 import React from "react"
-import {DEFAULT_POSITION, InstanceData} from "../state/data";
+import {DEFAULT_POSITION} from "../state/data";
 import {useVisualiserProps} from "./Visualiser";
+import {InstanceData} from "../state/types";
 
 export const Instance: React.FC<InstanceData & {
     selected: boolean,

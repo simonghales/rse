@@ -1,12 +1,13 @@
 import React, {useEffect, useMemo} from "react"
 import {Instance} from "./Instance";
 import {useSnapshot} from "valtio";
-import {GroupData, InstanceData, instancesDataProxy} from "../state/data";
+import {instancesDataProxy} from "../state/data";
 import {editorStateProxy, useIsFreeViewMode, useSelectedInstance, useSelectedInstances} from "../state/editor";
 import {SelectedInstanceHandler} from "./SelectedInstanceHandler";
 import {SelectedInstanceMenu} from "../menus/SelectedInstanceMenu";
 import {SelectedInstancesRangeHandler} from "./SelectedInstancesRangeHandler";
 import {AssetConfig, useAssets} from "../state/assets";
+import {GroupData, InstanceData} from "../state/types";
 
 const isParentGroupLocked = (id: string, groups: Record<string, GroupData>) => {
     const parentGroup = Object.entries(groups).find(([groupId, groupData]) => {

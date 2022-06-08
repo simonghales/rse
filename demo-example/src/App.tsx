@@ -1,7 +1,7 @@
 import React from "react";
 import {boxLikeAssetConfig, registerAsset, SceneEditor, SceneEditorControls} from "../../src";
 import {Canvas} from "@react-three/fiber";
-import { Box } from "@react-three/drei";
+import { Box, Sphere } from "@react-three/drei";
 import styled from "styled-components";
 import {GlobalStyle} from "./ui/global";
 import {setInstancesData} from "../../src/editor/state/data";
@@ -16,6 +16,14 @@ const StyledContainer = styled.div`
   right: 0;
   bottom: 0;
 `
+
+export const SphereComponent: React.FC = () => {
+
+    return (
+        <Sphere/>
+    )
+
+}
 
 export const BoxComponent: React.FC = ({
                                            _width = 1,
@@ -38,6 +46,12 @@ registerAsset({
     id: '_box',
     name: 'Box',
     component: BoxComponent,
+})
+
+registerAsset({
+    id: '_sphere',
+    name: 'Sphere',
+    component: SphereComponent,
 })
 
 setInstancesData(data)

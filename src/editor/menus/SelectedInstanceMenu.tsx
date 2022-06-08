@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useMemo} from "react"
 import {useControls} from "leva";
 import {useSnapshot} from "valtio";
-import {InstanceData, instancesDataProxy, updateInstanceValue} from "../state/data";
+import {instancesDataProxy, updateInstanceValue} from "../state/data";
 import {AssetConfig, AssetInputConfig, getInstanceValue, useAsset} from "../state/assets";
+import {InstanceData} from "../state/types";
 
 const getMappedKey = (label: string, asset: AssetConfig) => {
     const inputs = asset.inputs ?? {}

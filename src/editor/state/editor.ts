@@ -1,7 +1,8 @@
 import {proxy, ref, useSnapshot} from "valtio";
 import {MutableRefObject, useMemo} from "react";
 import {Object3D} from "three";
-import {addNewGroup, deleteInstances, GroupData, InstanceData, instancesDataProxy} from "./data";
+import {addNewGroup, deleteInstances, instancesDataProxy} from "./data";
+import {GroupData, InstanceData} from "./types";
 
 export enum EditMode {
     FREE_VIEW = 'FREE_VIEW',

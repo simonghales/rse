@@ -1,7 +1,7 @@
 import {proxy, useSnapshot} from "valtio";
 import {useSelectedAsset} from "./editor";
-import {InstanceData, InstanceDataKeys} from "./data";
 import {degToRad} from "three/src/math/MathUtils";
+import {InstanceData, InstanceDataKeys} from "./types";
 
 export type AssetInputConfig = {
     key: string,

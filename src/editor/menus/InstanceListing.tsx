@@ -8,8 +8,9 @@ import {
     setHoveredInstance,
     setSelectedInstance, startFreeViewMode
 } from "../state/editor";
-import {InstanceData, InstanceDataKeys, updateInstanceValue} from "../state/data";
+import {updateInstanceValue} from "../state/data";
 import {isCommandPressed, isShiftPressed} from "../state/hotkeys";
+import {InstanceData, InstanceDataKeys} from "../state/types";
 
 const cssSelected = css`
   background-color: ${THEME.colors.active};

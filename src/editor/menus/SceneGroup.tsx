@@ -1,9 +1,5 @@
 import React from "react"
 import {
-    GroupData,
-    GroupDataKeys,
-    InstanceData,
-    InstanceDataKeys,
     updateGroupValue,
     updateInstanceValue
 } from "../state/data";
@@ -30,6 +26,7 @@ import {
     FaSave
 } from "react-icons/fa";
 import {cssButtonReset, StyledRoundButton} from "../../ui/buttons";
+import {GroupData, GroupDataKeys, InstanceData, InstanceDataKeys} from "../state/types";
 
 type ItemBase = {
     id: string,
