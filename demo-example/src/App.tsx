@@ -1,5 +1,5 @@
 import React from "react";
-import {boxLikeAssetConfig, registerAsset, SceneEditor, SceneEditorControls} from "../../src";
+import {boxLikeAssetConfig, PolygonPreview, registerAsset, SceneEditor, SceneEditorControls} from "../../src";
 import {Canvas} from "@react-three/fiber";
 import { Box, Sphere } from "@react-three/drei";
 import styled from "styled-components";
@@ -42,6 +42,12 @@ export const BoxComponent: React.FC = ({
 }
 
 registerAsset({
+    id: '_polygon',
+    name: 'Polygon',
+    component: PolygonPreview,
+})
+
+registerAsset({
     ...boxLikeAssetConfig,
     id: '_box',
     name: 'Box',
@@ -52,6 +58,16 @@ registerAsset({
     id: '_sphere',
     name: 'Sphere',
     component: SphereComponent,
+    inputs: {
+        test: {
+            key: 'test',
+            label: 'Test',
+            defaultValue: 'test',
+            options: {
+                options: [],
+            }
+        }
+    }
 })
 
 setInstancesData(data)

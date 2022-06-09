@@ -3,7 +3,7 @@ import {Plane} from "@react-three/drei";
 import {degToRad} from "three/src/math/MathUtils";
 import {InstancePreviewHandler} from "./InstancePreview";
 import {addNewInstanceOfSelectedAsset} from "../state/data";
-import {clearSelectedInstance, setClearPendingDown, useIsPlaceInstanceMode} from "../state/editor";
+import {clearSelectedInstance, isEditorDragging, setClearPendingDown, useIsPlaceInstanceMode} from "../state/editor";
 import {isCommandPressed} from "../state/hotkeys";
 import {PlacementType, useSelectedAssetPlacementType} from "../state/assets";
 import {useSceneEditorControlsContext} from "../SceneEditorControlsContext";
@@ -128,6 +128,7 @@ export const PlacementPlane: React.FC = () => {
         if (!enabled) {
             if (isCommandPressed()) return
             if (!localStateRef.current.pendingDeselect) return
+            if (isEditorDragging()) return
             // if (hasRecentlyDragged()) return
             clearSelectedInstance()
             return

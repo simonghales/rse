@@ -40,6 +40,7 @@ const SceneInstances: React.FC = () => {
     const {
         selectedInstance: selectedInstanceSource,
         selectedInstancesRange,
+        manualMode,
     } = useSelectedInstances()
 
     const selectedInstance = useMemo(() => {
@@ -59,13 +60,14 @@ const SceneInstances: React.FC = () => {
                 return null
             }
             const groupProps = (asset && asset.getGroupProps) ? asset.getGroupProps(instance as InstanceData, asset as AssetConfig) : {}
-            const selectable = isFreeView && !isParentGroupLocked(id, groups as any)
+            const selectable = isFreeView && !isParentGroupLocked(id, groups as any) && !manualMode
             const hidden = isParentGroupHidden(id, groups as any)
+            const manualSelected = selected && manualMode
             return (
-                <Instance {...(instance as InstanceData)} hidden={hidden} groupProps={groupProps} selectable={selectable} component={asset.component} rangeSelected={rangeSelected} selected={selected} hovered={id === hoveredInstance} key={id}/>
+                <Instance {...(instance as InstanceData)} manualSelected={manualSelected} hidden={hidden} groupProps={groupProps} selectable={selectable} component={asset.component} rangeSelected={rangeSelected} selected={selected} hovered={id === hoveredInstance} key={id}/>
             )
         })
-    }, [data, assets, isFreeView, selectedInstance, hoveredInstance, selectedInstancesRange, selectedInstanceSource, groups])
+    }, [data, assets, isFreeView, selectedInstance, hoveredInstance, selectedInstancesRange, selectedInstanceSource, groups, manualMode])
 
     return (
         <>

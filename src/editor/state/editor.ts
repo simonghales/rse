@@ -77,13 +77,23 @@ export const editorStateProxy = proxy({
     selectedInstance: {
         id: '',
         objRef: null as null | MutableRefObject<Object3D>,
+        manualMode: false,
     },
     selectedInstancesRange: [] as string[],
     selectedInstancesRangeRefs: {} as Record<string, MutableRefObject<Object3D>>,
     hoveredInstance: '',
     selectedAsset: '',
     expandedState: {} as Record<string, boolean>,
+    dragging: false,
 })
+
+export const isEditorDragging = () => {
+    return editorStateProxy.dragging
+}
+
+export const setEditorDragging = (dragging: boolean) => {
+    editorStateProxy.dragging = dragging
+}
 
 export const setTransformMode = (mode: TransformMode) => {
     editorStateProxy.transformMode = mode
@@ -151,7 +161,12 @@ export const getSelectedId = () => {
 export const clearSelectedInstance = () => {
     editorStateProxy.selectedInstance.id = ''
     editorStateProxy.selectedInstance.objRef = null
+    editorStateProxy.selectedInstance.manualMode = false
     editorStateProxy.selectedInstancesRange = []
+}
+
+export const enterManualMode = () => {
+    editorStateProxy.selectedInstance.manualMode = true
 }
 
 export const hasSelectedInstance = () => {
@@ -326,19 +341,22 @@ export const useSelectedInstances = () => {
     } = useSnapshot(editorStateProxy)
     const {
         id,
+        manualMode,
     } = useSnapshot(editorStateProxy.selectedInstance)
     return useMemo(() => {
         if (editMode !== EditMode.FREE_VIEW) {
             return {
                 selectedInstance: '',
                 selectedInstancesRange: [],
+                manualMode,
             }
         }
         return {
             selectedInstance: id,
             selectedInstancesRange,
+            manualMode,
         }
-    }, [editMode, id, selectedInstancesRange])
+    }, [editMode, id, selectedInstancesRange, manualMode])
 }
 
 export const insertChildren = (children: string[], groups: Record<string, GroupData>) => {

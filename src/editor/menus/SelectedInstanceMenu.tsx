@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo} from "react"
 import {useControls} from "leva";
 import {useSnapshot} from "valtio";
 import {instancesDataProxy, updateInstanceValue} from "../state/data";
-import {AssetConfig, AssetInputConfig, getInstanceValue, useAsset} from "../state/assets";
+import {AssetConfig, AssetInputConfig, getInstanceOptions, getInstanceValue, useAsset} from "../state/assets";
 import {InstanceData} from "../state/types";
 
 const getMappedKey = (label: string, asset: AssetConfig) => {
@@ -47,8 +47,10 @@ export const SelectedInstanceMenu: React.FC<{
         if (!asset) return config
         const inputs = asset.inputs ?? {}
         Object.entries(inputs).forEach(([key, value]) => {
+            const inputValue = getInstanceValue(instance as InstanceData, value as AssetInputConfig)
             config[value.label] = {
-                value: getInstanceValue(instance as InstanceData, value as AssetInputConfig),
+                ...getInstanceOptions(inputValue, instance as InstanceData, value as AssetInputConfig),
+                value: inputValue,
                 onChange,
             }
         })

@@ -6,6 +6,7 @@ import {InstanceData} from "../state/types";
 export const Instance: React.FC<InstanceData & {
     selected: boolean,
     selectable: boolean,
+    manualSelected: boolean,
     hovered: boolean,
     rangeSelected: boolean,
     component: any,
@@ -18,6 +19,7 @@ export const Instance: React.FC<InstanceData & {
             selectable,
           hovered,
           rangeSelected,
+                                 manualSelected,
                                  hidden,
          component: Component,
     ...otherProps
@@ -29,13 +31,13 @@ export const Instance: React.FC<InstanceData & {
         onPointerDown,
         onPointerOut,
         onPointerOver,
-    } = useVisualiserProps(id, selected, rangeSelected, hovered, selectable)
+    } = useVisualiserProps(id, selected && !manualSelected, rangeSelected, hovered, selectable)
 
     const inner = (
         <group {...groupProps} ref={ref}
                 onPointerUp={onPointerUp} onPointerDown={onPointerDown}
                 onPointerOut={onPointerOut} onPointerOver={onPointerOver} visible={!hidden}>
-            <Component id={id} {...otherProps}/>
+            <Component id={id} manualSelected={manualSelected} {...otherProps}/>
         </group>
     )
 

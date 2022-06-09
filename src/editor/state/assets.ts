@@ -1,4 +1,4 @@
-import {proxy, useSnapshot} from "valtio";
+import {proxy, ref, useSnapshot} from "valtio";
 import {useSelectedAsset} from "./editor";
 import {degToRad} from "three/src/math/MathUtils";
 import {InstanceData, InstanceDataKeys} from "./types";
@@ -7,6 +7,7 @@ export type AssetInputConfig = {
     key: string,
     label: string,
     defaultValue: any,
+    options?: Record<string, any>,
 }
 
 export type CoreAssetConfig = {
@@ -85,15 +86,28 @@ export const getInstanceValue = (instance: InstanceData, input: AssetInputConfig
     return input.defaultValue
 }
 
+export const getInstanceOptions = (value: any, instance: InstanceData, input: AssetInputConfig) => {
+    const options = {
+        ...input.options ?? {}
+    }
+    if (options.options) {
+        if (!options.options.includes(value)) {
+            options.options = options.options.slice()
+            options.options.push(value)
+        }
+    }
+    return options
+}
+
 export const registerAsset = (assetConfig: RequiredAssetConfig & Partial<AssetConfig>) => {
-    assetsProxy.assets[assetConfig.id] = {
+    assetsProxy.assets[assetConfig.id] = ref({
         getGroupProps: defaultGetGroupProps,
         ...assetConfig,
         inputs: {
             [positionInput.key]: positionInput,
             ...(assetConfig.inputs ?? {}),
         }
-    }
+    })
 }
 
 export const useSelectedAssetConfig = () => {
