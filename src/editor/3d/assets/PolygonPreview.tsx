@@ -57,7 +57,8 @@ export const PolygonPreview: React.FC<{
     _polygons: PolygonDataPoint[],
     manualSelected?: boolean,
     id: string,
-}> = ({id, _position, _polygons , manualSelected = false}) => {
+    color?: string,
+}> = ({id, _position, _polygons , manualSelected = false, color = 'cyan'}) => {
 
     const shiftHeld = useIsShiftPressed()
 
@@ -192,7 +193,7 @@ export const PolygonPreview: React.FC<{
                 enterManualMode()
             }}>
                 <extrudeBufferGeometry args={[shape, extrudeSettings]}/>
-                <meshBasicMaterial color={'cyan'} transparent opacity={0.2}/>
+                <meshBasicMaterial color={color} transparent opacity={0.2}/>
             </mesh>
             {
                 manualSelected && (

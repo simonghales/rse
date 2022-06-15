@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {SceneList} from "./SceneList";
 import {AssetsSection} from "./AssetsSection";
 import {cssDarkTheme, THEME} from "../../ui/theme";
-import {getSnapshot, redoData, undoData, useUndoRedoState} from "../state/data";
+import {getSnapshot, redoData, storeSnapshot, undoData, useUndoRedoState} from "../state/data";
 import {FaRedoAlt, FaUndoAlt, FaSave} from "react-icons/fa";
 import {StyledRoundButton} from "../../ui/buttons";
 import {ContextMenu} from "./ContextMenu";
@@ -37,6 +37,7 @@ const TopOptions: React.FC = () => {
     const copyData = () => {
         navigator.clipboard.writeText(JSON.stringify(getSnapshot())).then(function() {
             console.log('Async: Copying to clipboard was successful!');
+            storeSnapshot()
         }, function(err) {
             console.error('Async: Could not copy text: ', err);
         });

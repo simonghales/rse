@@ -1,7 +1,7 @@
 import {proxy, ref, useSnapshot} from "valtio";
 import {MutableRefObject, useMemo} from "react";
 import {Object3D} from "three";
-import {addNewGroup, deleteInstances, instancesDataProxy} from "./data";
+import {addNewGroup, deleteInstances, instancesDataProxy, updateInstanceValue} from "./data";
 import {GroupData, InstanceData} from "./types";
 
 export enum EditMode {
@@ -326,6 +326,24 @@ export const groupSelectedInstances = () => {
     const instances = getSelectedInstances()
     const targetParent = getHighestParent(instances)
     addNewGroup(instances, targetParent)
+}
+
+export const disableSelectedInstances = () => {
+    const instances = getSelectedInstances()
+    instances.forEach(instance => {
+        updateInstanceValue(instance, {
+            _disabled: true,
+        })
+    })
+}
+
+export const enableSelectedInstances = () => {
+    const instances = getSelectedInstances()
+    instances.forEach(instance => {
+        updateInstanceValue(instance, {
+            _disabled: false,
+        })
+    })
 }
 
 export const deleteSelectedInstances = () => {

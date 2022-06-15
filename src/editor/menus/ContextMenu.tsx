@@ -2,8 +2,8 @@ import React from "react"
 import {useSnapshot} from "valtio";
 import {
     clearEditorContextState,
-    deleteSelectedInstances,
-    editorContextStateProxy,
+    deleteSelectedInstances, disableSelectedInstances,
+    editorContextStateProxy, enableSelectedInstances,
     groupSelectedInstances
 } from "../state/editor";
 import styled from "styled-components";
@@ -74,6 +74,16 @@ const Inner: React.FC = () => {
         closeDropdown()
     }
 
+    const onDisable = () => {
+        disableSelectedInstances()
+        closeDropdown()
+    }
+
+    const onEnable = () => {
+        enableSelectedInstances()
+        closeDropdown()
+    }
+
     return (
         <StyledContainer x={x} y={y} ref={ref}>
             <StyledBody>
@@ -83,6 +93,12 @@ const Inner: React.FC = () => {
                     </StyledOption>
                     <StyledOption onClick={onGroup}>
                         Group
+                    </StyledOption>
+                    <StyledOption onClick={onDisable}>
+                        Disable
+                    </StyledOption>
+                    <StyledOption onClick={onEnable}>
+                        Enable
                     </StyledOption>
                 </StyledList>
             </StyledBody>

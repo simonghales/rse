@@ -41,9 +41,14 @@ const cssInteractive = css`
   
 `
 
+const cssDeactivated = css`
+  opacity: 0.33;
+`
+
 export const StyledContainer = styled.div<{
     selected: boolean,
     hovered?: boolean,
+    deactivated?: boolean,
 }>`
   display: grid;
   grid-template-columns: auto 1fr;
@@ -61,6 +66,7 @@ export const StyledContainer = styled.div<{
   
   ${props => props.hovered ? cssHovered : ''};
   ${props => props.selected ? cssSelected : cssInteractive};
+  ${props => props.deactivated ? cssDeactivated : ''};
 `
 
 export const StyledIcon = styled.div`
@@ -169,7 +175,7 @@ export const useNameEdit = (selected: boolean) => {
 export const InstanceListing: React.FC<InstanceData & {
     selected: boolean,
     hovered: boolean,
-}> = ({id, selected, hovered, _name}) => {
+}> = ({id, selected, hovered, _name, _disabled = false}) => {
 
     const onClick = () => {
 
@@ -214,8 +220,10 @@ export const InstanceListing: React.FC<InstanceData & {
 
     const name = _name || 'Object'
 
+    const disabled = _disabled
+
     return (
-        <StyledContainer selected={selected} hovered={hovered}
+        <StyledContainer deactivated={disabled} selected={selected} hovered={hovered}
                          onPointerDown={onPointerDown}
                          onPointerUp={onPointerUp}
                          onPointerOver={onPointerOver}
