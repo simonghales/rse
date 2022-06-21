@@ -1,6 +1,6 @@
 {
   "name": "@simonghales/react-three-scene-editor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/simonghales-react-three-scene-editor.cjs.js",
   "module": "dist/simonghales-react-three-scene-editor.esm.js",
   "author": "Simon Hales",
