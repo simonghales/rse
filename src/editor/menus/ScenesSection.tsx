@@ -3,7 +3,7 @@ import {StyledMediumHeader} from "../../ui/typography";
 import styled from "styled-components";
 import {useScenes} from "../state/editor";
 import {setSelectedScene, useCurrentSceneId} from "../state/data";
-import {FaPlus} from "react-icons/all";
+import {FaPlus} from "react-icons/fa";
 import { StyledRoundButton } from "../../ui/buttons";
 import {AddSceneModal} from "./AddSceneModal";
 
