@@ -3,17 +3,22 @@ import {Camera} from "./3d/Camera";
 import {Guides} from "./3d/Guides";
 import {Instances} from "./3d/Instances";
 import {SceneEditorControlsContext} from "./SceneEditorControlsContext";
+import {Manager} from "./state/Manager";
 
-export const SceneEditorControls: React.FC<{
+export type SceneEditorControlsBaseProps = {
     zAxisVertical?: boolean,
-}> = ({zAxisVertical = false}) => {
+}
+
+export const SceneEditorControls: React.FC<SceneEditorControlsBaseProps & {}> = ({zAxisVertical = false}) => {
     return (
-        <SceneEditorControlsContext.Provider value={{
-            zAxisVertical,
-        }}>
-            <Camera/>
-            <Guides/>
-            <Instances/>
-        </SceneEditorControlsContext.Provider>
+        <Manager isParent={false}>
+            <SceneEditorControlsContext.Provider value={{
+                zAxisVertical,
+            }}>
+                <Camera/>
+                <Guides/>
+                <Instances/>
+            </SceneEditorControlsContext.Provider>
+        </Manager>
     )
 }

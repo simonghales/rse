@@ -1,10 +1,13 @@
 import React from "react";
-import {boxLikeAssetConfig, PolygonPreview, registerAsset, SceneEditor, SceneEditorControls} from "../../src";
+import {
+    boxLikeAssetConfig,
+    PolygonPreview,
+    registerAsset, SceneEditor, SceneEditorControls,
+} from "../../src";
 import {Canvas} from "@react-three/fiber";
 import { Box, Sphere } from "@react-three/drei";
 import styled from "styled-components";
 import {GlobalStyle} from "./ui/global";
-import {setInstancesData} from "../../src/editor/state/data";
 import data from "./data.json"
 
 const StyledContainer = styled.div`
@@ -70,13 +73,24 @@ registerAsset({
     }
 })
 
-setInstancesData(data)
+// initManager('', data)
+
+const scenes = {
+    '': {
+        name: 'Default',
+        data,
+    },
+    '_second': {
+        name: 'Second Scene',
+    },
+}
 
 export function App() {
+
     return (
         <>
             <GlobalStyle/>
-            <SceneEditor>
+            <SceneEditor scenes={scenes}>
                 <StyledContainer>
                     <Canvas>
                         <ambientLight />

@@ -1,13 +1,13 @@
-import React, {useEffect, useMemo} from "react"
+import React, {useMemo} from "react"
 import {Instance} from "./Instance";
 import {useSnapshot} from "valtio";
-import {instancesDataProxy} from "../state/data";
-import {editorStateProxy, useIsFreeViewMode, useSelectedInstance, useSelectedInstances} from "../state/editor";
+import {editorStateProxy, useIsFreeViewMode, useSelectedInstances} from "../state/editor";
 import {SelectedInstanceHandler} from "./SelectedInstanceHandler";
 import {SelectedInstanceMenu} from "../menus/SelectedInstanceMenu";
 import {SelectedInstancesRangeHandler} from "./SelectedInstancesRangeHandler";
 import {AssetConfig, useAssets} from "../state/assets";
-import {GroupData, InstanceData} from "../state/types";
+import {GroupData, InstanceData, StoredData} from "../state/types";
+import {useCurrentSceneProxy} from "../state/Manager";
 
 const isParentGroupLocked = (id: string, groups: Record<string, GroupData>) => {
     const parentGroup = Object.entries(groups).find(([groupId, groupData]) => {
@@ -31,10 +31,11 @@ const isParentGroupHidden = (id: string, groups: Record<string, GroupData>) => {
 
 const SceneInstances: React.FC = () => {
     const assets = useAssets()
+    const sceneProxy = useCurrentSceneProxy()
     const {
         instances: data,
-        groups,
-    } = useSnapshot(instancesDataProxy).value
+        groups = {},
+    } = useSnapshot(sceneProxy).value as StoredData
     const hoveredInstance = useSnapshot(editorStateProxy).hoveredInstance
     const isFreeView = useIsFreeViewMode()
     const {

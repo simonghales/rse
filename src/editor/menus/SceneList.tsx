@@ -1,12 +1,12 @@
-import React, {useMemo} from "react"
+import React, {useEffect, useMemo} from "react"
 import styled from "styled-components";
 import {THEME} from "../../ui/theme";
 import {StyledMediumHeader} from "../../ui/typography";
 import {useSnapshot} from "valtio";
-import {instancesDataProxy} from "../state/data";
 import {editorStateProxy, sortInstances, useSelectedInstances} from "../state/editor";
 import {Group, Item} from "./SceneGroup";
-import {GroupData, InstanceData} from "../state/types";
+import {GroupData, InstanceData, StoredData} from "../state/types";
+import {useCurrentSceneProxy} from "../state/Manager";
 
 const StyledContainer = styled.div`
   display: grid;
@@ -24,7 +24,14 @@ const StyledBody = styled.div`
 
 export const SceneList: React.FC = () => {
 
-    const data = useSnapshot(instancesDataProxy).value.instances
+
+    const sceneProxy = useCurrentSceneProxy()
+
+    useEffect(() => {
+        console.log('sceneProxy', sceneProxy.value)
+    }, [sceneProxy])
+
+    const data = (useSnapshot(sceneProxy).value as StoredData).instances
 
     const hoveredInstance = useSnapshot(editorStateProxy).hoveredInstance
 
@@ -33,7 +40,7 @@ export const SceneList: React.FC = () => {
         selectedInstancesRange,
     } = useSelectedInstances()
 
-    const groups = useSnapshot(instancesDataProxy.value).groups ?? {}
+    const groups = (useSnapshot(sceneProxy).value as StoredData).groups ?? {}
 
     // const instances = useMemo(() => {
     //     return Object.entries(data).map(([id, instance]) => (

@@ -1,11 +1,11 @@
 import {useMemo} from "react"
 import {getInitialState} from "../editor/state/storage";
 
-export const getSceneData = (data?: any) => {
+export const getSceneData = (sceneId: string, data?: any) => {
     if (!data) {
-        return getInitialState()
+        return getInitialState(sceneId)
     }
-    const currentState = getInitialState()
+    const currentState = getInitialState(sceneId)
     const newTimestamp = data?.timestamp ?? 0
     const currentTimestamp = currentState?.timestamp ?? 0
     if (newTimestamp > currentTimestamp) {
@@ -14,8 +14,8 @@ export const getSceneData = (data?: any) => {
     return currentState
 }
 
-export const useSceneData = (data?: any) => {
+export const useSceneData = (sceneId: string, data?: any) => {
     return useMemo(() => {
-       return getSceneData(data)
-    }, [data])
+       return getSceneData(sceneId, data)
+    }, [sceneId, data])
 }

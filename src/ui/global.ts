@@ -1,5 +1,6 @@
 import {createGlobalStyle} from "styled-components";
 import reset from "styled-reset"
+import {cssModal} from "./modal";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset};
@@ -18,5 +19,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: rgba(75, 160, 255, 0.3);
     position: fixed;
   }
+  
+  ${cssModal};
   
 `

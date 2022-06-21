@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useMemo} from "react"
 import {useControls} from "leva";
 import {useSnapshot} from "valtio";
-import {instancesDataProxy, updateInstanceValue} from "../state/data";
+import {updateInstanceValue} from "../state/data";
 import {AssetConfig, AssetInputConfig, getInstanceOptions, getInstanceValue, useAsset} from "../state/assets";
-import {InstanceData} from "../state/types";
+import {InstanceData, StoredData} from "../state/types";
+import {useCurrentSceneProxy} from "../state/Manager";
 
 const getMappedKey = (label: string, asset: AssetConfig) => {
     const inputs = asset.inputs ?? {}
@@ -20,7 +21,9 @@ export const SelectedInstanceMenu: React.FC<{
     id: string,
 }> = ({id}) => {
 
-    const instances = useSnapshot(instancesDataProxy).value.instances
+    const sceneProxy = useCurrentSceneProxy()
+
+    const instances = (useSnapshot(sceneProxy).value as StoredData).instances
 
     const instance = useMemo(() => {
         return instances[id]

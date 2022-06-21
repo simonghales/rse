@@ -1,8 +1,17 @@
 import {proxy, ref, useSnapshot} from "valtio";
 import {MutableRefObject, useMemo} from "react";
 import {Object3D} from "three";
-import {addNewGroup, deleteInstances, instancesDataProxy, updateInstanceValue} from "./data";
+import {
+    addNewGroup,
+    deleteInstances,
+    getManagerSceneProxy,
+    initManagerSceneProxy,
+    setSelectedScene,
+    storeScenes,
+    updateInstanceValue
+} from "./data";
 import {GroupData, InstanceData} from "./types";
+import uniqid from "uniqid";
 
 export enum EditMode {
     FREE_VIEW = 'FREE_VIEW',
@@ -85,7 +94,35 @@ export const editorStateProxy = proxy({
     selectedAsset: '',
     expandedState: {} as Record<string, boolean>,
     dragging: false,
+    scenes: {} as Record<string, {
+        name?: string,
+    }>
 })
+
+export const getSceneName = (id: string) => {
+    return editorStateProxy.scenes[id]?.name ?? ''
+}
+
+export const addNewScene = (name: string) => {
+
+    const sceneId = uniqid()
+
+    editorStateProxy.scenes[sceneId] = {
+        name,
+    }
+
+    initManagerSceneProxy(sceneId)
+
+    setSelectedScene(sceneId)
+
+    storeScenes()
+
+}
+
+export const useScenes = () => {
+    const scenes = useSnapshot(editorStateProxy.scenes)
+    return scenes
+}
 
 export const isEditorDragging = () => {
     return editorStateProxy.dragging
@@ -252,7 +289,9 @@ export const deselectInstance = (id: string) => {
 
 export const selectInstancesRange = (targetId: string) => {
 
-    const order = sortInstances(instancesDataProxy.value.instances as any, instancesDataProxy.value.groups as any)
+    const sceneProxy = getManagerSceneProxy()
+
+    const order = sortInstances(sceneProxy.value.instances as any, sceneProxy.value.groups as any)
 
     const currentStartingIndex = getSelectedInstanceIndex(order)
 
@@ -276,7 +315,8 @@ const getSelectedInstances = () => {
 }
 
 export const getGroup = (id: string) => {
-    return instancesDataProxy.value.groups?.[id]
+    const sceneProxy = getManagerSceneProxy()
+    return sceneProxy.value.groups?.[id]
 }
 
 export const getGroupLevel = (id: string, currentLevel: number, group?: GroupData): number => {
@@ -295,8 +335,9 @@ export const getInstanceLevel = (id: string, instance: InstanceData) => {
 export const getHighestParent = (instances: string[]) => {
     let parentLevel: null | number = null
     let parent: null | string = ''
-    const instancesData = instancesDataProxy.value.instances
-    const groupsData = instancesDataProxy.value.groups ?? {}
+    const sceneProxy = getManagerSceneProxy()
+    const instancesData = sceneProxy.value.instances
+    const groupsData = sceneProxy.value.groups ?? {}
     instances.forEach((id) => {
         let instanceParent = ''
         let instanceLevel = 0
@@ -450,7 +491,7 @@ export const sortInstances = (instances: Record<string, InstanceData>, groups?: 
             return
         }
         if (groupsMap[groupId] !== undefined) return
-        getGroupDepth(0, groupId, group, groups, groupsMap)
+        getGroupDepth(0, groupId, group, groups ?? {}, groupsMap)
     })
 
     const orphans: Record<string, string[]> = {}

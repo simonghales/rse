@@ -7,6 +7,7 @@ import {getSnapshot, redoData, storeSnapshot, undoData, useUndoRedoState} from "
 import {FaRedoAlt, FaUndoAlt, FaSave} from "react-icons/fa";
 import {StyledRoundButton} from "../../ui/buttons";
 import {ContextMenu} from "./ContextMenu";
+import {ScenesSection} from "./ScenesSection";
 
 const StyledContainer = styled.div`
   ${cssDarkTheme};
@@ -14,7 +15,7 @@ const StyledContainer = styled.div`
   width: 200px;
   overflow-y: hidden;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
   grid-row-gap: ${THEME.spacing.$2}px;
   padding-top: ${THEME.spacing.$2}px;
 `
@@ -64,6 +65,7 @@ export const SceneEditorUI: React.FC = () => {
         <>
             <StyledContainer>
                 <TopOptions/>
+                <ScenesSection/>
                 <AssetsSection/>
                 <SceneList/>
             </StyledContainer>
