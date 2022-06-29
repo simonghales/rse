@@ -23,6 +23,10 @@ export const getScenesStorageKey = () => {
     return `${scenesStorageKey}`
 }
 
+export const storeScenesInStorage = (scenes: any) => {
+    set(getScenesStorageKey(), scenes)
+}
+
 export const getStoredScenes = () => {
     return get(getScenesStorageKey()) ?? {}
 }

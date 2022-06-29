@@ -5,7 +5,7 @@ import { boxLikeAssetConfig } from "./editor/3d/assets/Box";
 import { registerAsset } from "./editor/state/assets";
 import { setInstancesData } from "./editor/state/data";
 import {getSceneData, useSceneData } from "./live/SceneManager";
-import { PolygonPreview } from "./editor/3d/assets/PolygonPreview";
+import { PolygonPreview, usePolygonShape } from "./editor/3d/assets/PolygonPreview";
 
 export {
     SceneEditor,
@@ -15,5 +15,6 @@ export {
     setInstancesData,
     useSceneData,
     getSceneData,
+    usePolygonShape,
     PolygonPreview,
 }

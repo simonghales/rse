@@ -52,19 +52,8 @@ const DeleteListener: React.FC<{
     return null
 }
 
-export const PolygonPreview: React.FC<{
-    _position: any,
-    _polygons: PolygonDataPoint[],
-    manualSelected?: boolean,
-    id: string,
-    color?: string,
-}> = ({id, _position, _polygons , manualSelected = false, color = 'cyan'}) => {
-
-    const shiftHeld = useIsShiftPressed()
-
-    const data: PolygonDataPoint[] = _polygons ?? defaultPolygons
-
-    const shape = useMemo<Shape>(() => {
+export const usePolygonShape = (data: PolygonDataPoint[]) => {
+    return useMemo<Shape>(() => {
         const shape = new Shape()
         if (data.length === 0) {
             return shape
@@ -77,6 +66,21 @@ export const PolygonPreview: React.FC<{
         shape.lineTo(data[0].x, data[0].y)
         return shape
     }, [data])
+}
+
+export const PolygonPreview: React.FC<{
+    _position: any,
+    _polygons: PolygonDataPoint[],
+    manualSelected?: boolean,
+    id: string,
+    color?: string,
+}> = ({id, _position, _polygons , manualSelected = false, color = 'cyan'}) => {
+
+    const shiftHeld = useIsShiftPressed()
+
+    const data: PolygonDataPoint[] = _polygons ?? defaultPolygons
+
+    const shape = usePolygonShape(data)
 
     const [hoveredHandle, setHoveredHandle] = useState('')
 

@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {proxy, ref, snapshot, subscribe, useSnapshot} from "valtio";
 import {editorStateProxy, getSceneName} from "./editor";
 import {assetsProxy} from "./assets";
-import {getScenesStorageKey, getSceneStorageKey, getStoredScenes} from "./storage";
+import {getSceneStorageKey, getStoredScenes, storeScenesInStorage} from "./storage";
 import {InstanceData, InstanceDataKeys, StoredData} from "./types";
 import {addScenes, DEFAULT_SCENE_ID} from "./misc";
 import {getSceneData} from "../../live/SceneManager";
@@ -161,7 +161,7 @@ export const storeScenes = () => {
         scenes[id] = data?.name ?? ''
     })
 
-    set(getScenesStorageKey(), scenes)
+    storeScenesInStorage(scenes)
 }
 
 export const storeSnapshot = () => {
